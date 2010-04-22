@@ -1,0 +1,14 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version='1.0-SNAPSHOT'
+sourceCompatibility = 1.6
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	testCompile 'org.mockito:mockito-all:1.8.4'
+	testCompile 'junit:junit:4.4'
+}
