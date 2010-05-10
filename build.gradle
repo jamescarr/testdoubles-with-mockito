@@ -9,6 +9,8 @@ repositories {
 }
 
 dependencies {
-	testCompile 'org.mockito:mockito-all:1.8.4'
 	testCompile 'junit:junit:4.7'
+	testCompile 'org.mockito:mockito-all:1.8.4'
+	compile 'org.apache.activemq:activemq-all:5.3.1'
+	
 }
