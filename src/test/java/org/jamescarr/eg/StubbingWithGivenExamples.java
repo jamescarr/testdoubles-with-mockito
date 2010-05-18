@@ -2,8 +2,12 @@ package org.jamescarr.eg;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.mockito.BDDMockito.*;
+
+import javax.swing.undo.CannotUndoException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +26,14 @@ public class StubbingWithGivenExamples {
 		
 		assertThat(pricingService.getPrice("SKU12345"), equalTo(25.22));	
 	}
-	
+
+	@Test
+	public void alternativeStubbingFormat(){
+		willReturn(25.22).given(pricingService).getPrice("SKU12345");
+		
+		assertThat(pricingService.getPrice("SKU12345"), equalTo(25.22));	
+	}
+
 	@Test
 	public void stubbedReturnValueForConsecutiveCalls(){
 		given(pricingService.getPrice("SKU12345")).willReturn(25.22, 33.22, 11.00);
@@ -50,5 +61,25 @@ public class StubbingWithGivenExamples {
 		assertThat(pricingService.getPrice("Blah Blah BLah"), equalTo(22.00));
 	}
 	
+	@Test
+	public void differentExceptionsForConsecutiveCalls(){
+		given(pricingService.getPrice(anyString())).willThrow(new CannotUndoException(), new IllegalArgumentException());
+		
+		try{
+			pricingService.getPrice("BADSKU");
+			fail("should have thrown CannotUndoException");
+		}catch (CannotUndoException e) {
+				
+		}
+		
+		try{
+			pricingService.getPrice("BADSKU");
+			fail("should have thrown IllegalArgumentException");
+		}catch (IllegalArgumentException e) {
+				
+		}
+	}
+	
+
 	
 }
